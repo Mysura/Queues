@@ -12,9 +12,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * Hello world!
  *
  */
-public class App 
+public class QueueToQueue 
 {
-    private static ClassPathXmlApplicationContext context;
 
 	public static void main( String[] args ) throws Exception
     {
@@ -29,8 +28,9 @@ public class App
         TextMessage msg = session.createTextMessage();
         msg.setText("Hi Hellooooo");
         producer.send(msg);*/
-        context = new ClassPathXmlApplicationContext("spring-queue.xml");
+		ClassPathXmlApplicationContext  context = new ClassPathXmlApplicationContext("spring-queue.xml");
         context.start();
+        Thread.sleep(5000);;
         context.stop();
     }
 }
