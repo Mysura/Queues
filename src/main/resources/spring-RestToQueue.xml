@@ -13,15 +13,21 @@
 	</bean>
 
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
-	<restConfiguration component="restlet" port="9009"/>
+		<restConfiguration bindingMode="auto" component="restlet"
+			port="8080" />
+		<rest path="/say">
+			<get uri="/hello">
+				<to uri="direct:hello" />
+			</get>
+		</rest>
 		<route>
-			<from uri="activeMq:queue:sample2" />
-			<process ref="processor" />
-			<bean ref="transformer" />
-			<toD uri="hello" />
+			<from uri="direct:hello" />
+			<process ref="processor"></process>
+			<bean ref="transformer"></bean>
+			<to uri="activeMq:queue:sample3" pattern="InOnly"/>
 		</route>
 	</camelContext>
-	
+
 	<bean id="processor" class="com.sampleApache.DataProcessor" />
 	<bean id="transformer" class="com.sampleApache.DataTransformer" />
 	<bean id="jmsConFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
